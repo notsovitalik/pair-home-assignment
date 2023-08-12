@@ -28,7 +28,7 @@ services:
       POSTGRESQL_CS: 'postgresql+psycopg2://postgres:password@psql_db:5432/main'
     depends_on:
       - psql_db
-    command: ["python", "./main.py" ]
+    command: ["python", "main.py" ]
   
   analytics:
     build:
@@ -36,11 +36,14 @@ services:
     environment:
       POSTGRESQL_CS: 'postgresql+psycopg2://postgres:password@psql_db:5432/main'
       MYSQL_CS: 'mysql+pymysql://nonroot:nonroot@mysql_db/analytics?charset=utf8'
-
+      MYSQL_CS_ROOT: 'mysql+pymysql://root:root@mysql_db/analytics?charset=utf8'
+    volumes:
+      - ./analytics:/app
+    restart: always
     depends_on:
       - mysql_db
       - psql_db
       - main
-    command: ["python", "./analytics.py" ]
+    command: ["python", "analytics.py" ]
 
 
